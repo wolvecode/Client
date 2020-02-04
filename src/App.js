@@ -17,8 +17,6 @@ class App extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = { todos: todo.push(todos), currentodo: '' }
-    this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
 
     this.state = {
@@ -27,31 +25,16 @@ class App extends React.Component {
       currentTodo: ''
     }
 
-    this.update = this.update.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  update(e) {
-    this.setState({
-      currentTodo: e.target.value
-    })
+  handleSubmit(value) {
+    addTodo(value).then(todo =>
+      this.setState({
+        todos: [todo, ...this.state.todos]
+      })
+    )
   }
-
-  handleSubmit(e) {
-    e.preventDefault()
-    if (!this.state.currenTodo.length) {
-      return
-    }
-    const newTodo = {
-      currentodo: this.state.currenTodo
-    }
-    this.setState(state => ({
-      todos: state.todos.concat(newTodo),
-      currenTodo: ''
-    }))
-  }
-  // handleChange(e) {
-  //   this.setState({ text: e.target.value });
-  // }
 
   componentDidMount() {
     getAllTodo()
@@ -68,7 +51,7 @@ class App extends React.Component {
     return (
       <div className="container mt-5">
         <Logo />
-        <Search update={this.update} currentTodo={this.state.update} />
+        <Search onSubmit={this.handleSubmit} />
         {!todos && loading ? <Loading /> : <Todo todos={todos} />}
       </div>
     )
