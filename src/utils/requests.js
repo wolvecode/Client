@@ -16,13 +16,20 @@ exports.addTodo = title => {
 }
 
 exports.getTodo = () => {
-  return fetch(baseURL).then(res.json())
+  return fetch(baseURL + 'todo' + id).then(res.json())
 }
 
-exports.updateTodo = () => {
-  return fetch(baseURL).then(res.json())
+exports.updateTodo = (id, status) => {
+  return fetch(`${baseURL}/todo/${id}`, {
+    method: 'put',
+    body: JSON.stringify({ done: status }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json())
 }
 
-exports.deleteTodo = () => {
-  return fetch(baseURL).then(res.json())
+exports.deleteTodo = index => {
+  const _id = { index }
+  return fetch(baseURL + '/todo/' + _id).then(res => res.json())
 }

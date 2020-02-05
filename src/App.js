@@ -17,15 +17,18 @@ class App extends React.Component {
   constructor(props) {
     super(props)
 
-    this.handleSubmit = this.handleSubmit.bind(this)
-
     this.state = {
       todos: null,
-      loading: true,
-      currentTodo: ''
+      loading: true
     }
 
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.updateTask = this.updateTask.bind(this)
+  }
+
+  updateTask(id, status) {
+    updateTodo(id, status)
+      .then(({ data }) => getAllTodo())
+      .then(({ data }) => this.setState({ todos: data }))
   }
 
   handleSubmit(value) {
@@ -52,7 +55,11 @@ class App extends React.Component {
       <div className="container mt-5">
         <Logo />
         <Search onSubmit={this.handleSubmit} />
-        {!todos && loading ? <Loading /> : <Todo todos={todos} />}
+        {!todos && loading ? (
+          <Loading />
+        ) : (
+          <Todo updateTask={this.updateTask} todos={todos} />
+        )}
       </div>
     )
   }
